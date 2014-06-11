@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Stratocumulus::VERSION
   spec.authors       = ['Ed Robinson']
   spec.email         = ['ed.robinson@reevoo.com']
-  spec.summary       = %q(TODO: Write a short summary. Required.)
-  spec.description   = %q(TODO: Write a longer description. Optional.)
+  spec.summary       = %q(Backup Databases to Cloud Storage)
+  spec.description   = %q(Backup Databases to Cloud Storage)
   spec.homepage      = 'https://github.com/reevoo/stratocumulus'
   spec.license       = 'MIT'
 
