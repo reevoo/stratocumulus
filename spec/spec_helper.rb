@@ -1,4 +1,15 @@
 # encoding: UTF-8
+require 'simplecov'
+require 'coveralls'
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
+
+SimpleCov.start do
+  minimum_coverage 100
+end
 
 require 'bundler/setup'
 Bundler.setup

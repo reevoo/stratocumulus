@@ -1,4 +1,5 @@
 # Stratocumulus
+[![Coverage Status](https://coveralls.io/repos/reevoo/stratocumulus/badge.png)](https://coveralls.io/r/reevoo/stratocumulus)
 
 Stratocumulus is for backing up databases to cloud storage
 
