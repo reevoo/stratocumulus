@@ -1,5 +1,9 @@
 # Stratocumulus
+[![Build Status](https://travis-ci.org/reevoo/stratocumulus.svg?branch=master)](https://travis-ci.org/reevoo/stratocumulus)
 [![Coverage Status](https://coveralls.io/repos/reevoo/stratocumulus/badge.png)](https://coveralls.io/r/reevoo/stratocumulus)
+[![Code Climate](https://codeclimate.com/github/reevoo/stratocumulus.png)](https://codeclimate.com/github/reevoo/stratocumulus)
+[![Gem Version](https://badge.fury.io/rb/stratocumulus.svg)](http://badge.fury.io/rb/stratocumulus)
+
 
 Stratocumulus is for backing up databases to cloud storage
 
