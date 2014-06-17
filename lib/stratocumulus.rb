@@ -2,3 +2,4 @@
 require 'stratocumulus/version'
 require 'stratocumulus/database'
 require 'stratocumulus/storage'
+require 'stratocumulus/runner'

@@ -1,0 +1,18 @@
+s3:
+  access_key_id: I_AM_THE_KEY_ID
+  secret_access_key: IamTHESekret
+  bucket: stratocumulus-test 
+  region: eu-west1
+databases:
+  -
+    type: mysql
+    name: stratocumulus_test
+    storage: s3
+    username: root
+    password: sekret
+    host: db1.example.com
+    port: 3307
+  -
+    type: mysql
+    name: stratocumulus_test_2
+    storage: s3
