@@ -8,7 +8,33 @@ Stratocumulus is for backing up databases to cloud storage
 
 ## Usage
 
-TODO: Write usage instructions here
+    $ stratocumulus backup /path/to/config.yml
+    
+```YAML
+s3:
+  access_key_id: KEY_ID
+  secret_access_key: SECRET_KEY
+  bucket: database-backups
+  region: eu-west-1 # defaults to us-east-1
+databases:
+  -
+    type: mysql
+    name: database_name
+    storage: s3
+    username: database_user # defaults to root
+    password: database_pass # defaults to no password
+    host: db1.example.com # defaults to localhost
+    port: 3306 # defaults to 3306
+  -
+    type: mysql
+    name: some_other_database
+    storage: s3
+```
+## Dependencies
+
+* mysqldump
+* gzip
+* Ruby, (tested on mri 1.9.3, 2.0.0 and 2.1.2)
 
 ## Contributing
 
