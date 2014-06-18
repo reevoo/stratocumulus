@@ -3,8 +3,6 @@ CREATE DATABASE stratocumulus_test
   WITH OWNER = postgres
        ENCODING = 'UTF8'
        TABLESPACE = pg_default
-       LC_COLLATE = 'en_GB.UTF-8'
-       LC_CTYPE = 'en_GB.UTF-8'
        CONNECTION LIMIT = -1;
 \c stratocumulus_test
 SET statement_timeout = 0;
