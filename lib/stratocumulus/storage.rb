@@ -47,7 +47,7 @@ module Stratocumulus
       return unless new_rule
       directories.service.put_bucket_lifecycle(
         @bucket,
-        existing_bucket_lifecycle_rules << new_rule
+        'Rules' => existing_bucket_lifecycle_rules << new_rule
       )
     end
 

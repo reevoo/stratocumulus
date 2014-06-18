@@ -82,7 +82,7 @@ describe Stratocumulus::Storage do
           expect(service).to receive(:put_bucket_lifecycle)
             .with(
               'stratocumulus-test',
-              [
+              'Rules' => [
                 {
                   'ID' => 'foo.sql.gz',
                   'Prefix' => 'foo.sql.gz',
@@ -129,7 +129,7 @@ describe Stratocumulus::Storage do
         it 'adds the rule to the existing rules' do
           expect(service).to receive(:put_bucket_lifecycle).with(
             'stratocumulus-test',
-            [
+            'Rules' => [
               {
                 'ID' => 'bar.sql.gz',
                 'Prefix' => 'bar.sql.gz',
