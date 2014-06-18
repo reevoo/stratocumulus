@@ -9,9 +9,12 @@ module Stratocumulus
       @secret_access_key = options.fetch('secret_access_key')
       @region = options['region']
       @bucket = options.fetch('bucket')
+      @retention = Retention.new(options['retention'])
     end
 
     def upload(database)
+      return unless @retention.upload_today?
+      add_expiry_rule(database.filename)
       files.create(
         key: database.filename,
         body: database.dump,
@@ -32,7 +35,26 @@ module Stratocumulus
     end
 
     def files
-      connection.directories.get(@bucket).files
+      directories.get(@bucket).files
+    end
+
+    def directories
+      connection.directories
+    end
+
+    def add_expiry_rule(key)
+      new_rule = @retention.rule(key)
+      return unless new_rule
+      directories.service.put_bucket_lifecycle(
+        @bucket,
+        existing_bucket_lifecycle_rules << new_rule
+      )
+    end
+
+    def existing_bucket_lifecycle_rules
+      directories.service.get_bucket_lifecycle(@bucket).data[:body]['Rules']
+    rescue Excon::Errors::NotFound
+      []
     end
   end
 end

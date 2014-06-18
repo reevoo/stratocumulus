@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe Stratocumulus::Storage do
-  let(:config) do
+  let(:base_config) do
     {
       'access_key_id' => 'IM_A_ID',
       'secret_access_key' => 'IM_A_SEKRET_KEY',
@@ -10,6 +10,8 @@ describe Stratocumulus::Storage do
       'bucket' =>  'stratocumulus-test'
     }
   end
+
+  let(:config) { base_config }
 
   subject { described_class.new(config) }
 
@@ -54,6 +56,102 @@ describe Stratocumulus::Storage do
         ).and_return(connection)
       end
     end
-  end
 
+    context 'with a schedule' do
+      let(:config) do
+        base_config.merge(
+          'retention' => {
+            1 => 30
+          }
+        )
+      end
+
+      let(:directories) do
+        double(:fog_dirs, get: double(files: files), service: service)
+      end
+      let(:service) { double(:fog_service) }
+
+      context 'no rules set on the bucket yet' do
+        before do
+          allow(service).to receive(:get_bucket_lifecycle)
+            .with('stratocumulus-test')
+            .and_raise(Excon::Errors::NotFound, '404 No rules set yet')
+        end
+
+        it 'puts a rule for the uploaded file' do
+          expect(service).to receive(:put_bucket_lifecycle)
+            .with(
+              'stratocumulus-test',
+              [
+                {
+                  'ID' => 'foo.sql.gz',
+                  'Prefix' => 'foo.sql.gz',
+                  'Enabled' => true,
+                  'Days' => 30
+                }
+              ]
+            )
+        end
+      end
+
+      context 'rules allready set on the bucket' do
+        let(:existing_rules) do
+          [
+            {
+              'ID' => 'bar.sql.gz',
+              'Prefix' => 'bar.sql.gz',
+              'Enabled' => true,
+              'Days' => 30
+            },
+            {
+              'ID' => 'baz.sql.gz',
+              'Prefix' => 'baz.sql.gz',
+              'Enabled' => true,
+              'Days' => 30
+            }
+          ]
+        end
+
+        before do
+          allow(service).to receive(:get_bucket_lifecycle)
+            .with('stratocumulus-test')
+            .and_return(
+              double(
+                data: {
+                  body: {
+                    'Rules' => existing_rules
+                  }
+                }
+              )
+            )
+        end
+
+        it 'adds the rule to the existing rules' do
+          expect(service).to receive(:put_bucket_lifecycle).with(
+            'stratocumulus-test',
+            [
+              {
+                'ID' => 'bar.sql.gz',
+                'Prefix' => 'bar.sql.gz',
+                'Enabled' => true,
+                'Days' => 30
+              },
+              {
+                'ID' => 'baz.sql.gz',
+                'Prefix' => 'baz.sql.gz',
+                'Enabled' => true,
+                'Days' => 30
+              },
+              {
+                'ID' => 'foo.sql.gz',
+                'Prefix' => 'foo.sql.gz',
+                'Enabled' => true,
+                'Days' => 30
+              }
+            ]
+          )
+        end
+      end
+    end
+  end
 end

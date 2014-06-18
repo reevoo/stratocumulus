@@ -3,6 +3,9 @@ s3:
   secret_access_key: IamTHESekret
   bucket: stratocumulus-test 
   region: eu-west1
+  retention:
+    1: 30
+    30: 12
 databases:
   -
     type: mysql

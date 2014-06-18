@@ -20,7 +20,8 @@ describe Stratocumulus::Runner do
       'access_key_id' => 'I_AM_THE_KEY_ID',
       'secret_access_key' => 'IamTHESekret',
       'bucket' => 'stratocumulus-test',
-      'region' => 'eu-west1'
+      'region' => 'eu-west1',
+      'retention' => { 1 => 30, 30 => 12 }
     ).and_return(storage)
   end
 
