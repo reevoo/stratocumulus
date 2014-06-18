@@ -21,7 +21,7 @@ module Stratocumulus
     end
 
     def storage
-      @storage ||= Storage.new(@config['s3'])
+      Storage.new(@config['s3'])
     end
   end
 end

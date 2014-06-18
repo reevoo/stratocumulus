@@ -16,7 +16,7 @@ describe Stratocumulus::Runner do
   end
 
   it 'passes the correct config to Storage' do
-    expect(Stratocumulus::Storage).to receive(:new).once.with(
+    expect(Stratocumulus::Storage).to receive(:new).twice.with(
       'access_key_id' => 'I_AM_THE_KEY_ID',
       'secret_access_key' => 'IamTHESekret',
       'bucket' => 'stratocumulus-test',

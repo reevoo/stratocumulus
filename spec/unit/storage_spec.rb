@@ -69,6 +69,7 @@ describe Stratocumulus::Storage do
       let(:directories) do
         double(:fog_dirs, get: double(files: files), service: service)
       end
+
       let(:service) { double(:fog_service) }
 
       context 'no rules set on the bucket yet' do
@@ -95,6 +96,8 @@ describe Stratocumulus::Storage do
       end
 
       context 'rules allready set on the bucket' do
+        let(:files) { [existing_file] }
+        let(:existing_file) { double(:fog_file, key: 'bar.sql.gz') }
         let(:existing_rules) do
           [
             {
@@ -124,21 +127,16 @@ describe Stratocumulus::Storage do
                 }
               )
             )
+          allow(files).to receive(:create).and_return(:true)
         end
 
-        it 'adds the rule to the existing rules' do
+        it 'adds the rule to the rules for existing files' do
           expect(service).to receive(:put_bucket_lifecycle).with(
             'stratocumulus-test',
             'Rules' => [
               {
                 'ID' => 'bar.sql.gz',
                 'Prefix' => 'bar.sql.gz',
-                'Enabled' => true,
-                'Days' => 30
-              },
-              {
-                'ID' => 'baz.sql.gz',
-                'Prefix' => 'baz.sql.gz',
                 'Enabled' => true,
                 'Days' => 30
               },

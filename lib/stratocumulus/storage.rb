@@ -35,7 +35,7 @@ module Stratocumulus
     end
 
     def files
-      directories.get(@bucket).files
+      @files ||= directories.get(@bucket).files
     end
 
     def directories
@@ -47,11 +47,17 @@ module Stratocumulus
       return unless new_rule
       directories.service.put_bucket_lifecycle(
         @bucket,
-        'Rules' => existing_bucket_lifecycle_rules << new_rule
+        'Rules' => current_rules << new_rule
       )
     end
 
-    def existing_bucket_lifecycle_rules
+    def current_rules
+      existing_rules.select do |rule|
+        files.find { |file| file.key == rule['ID'] }
+      end
+    end
+
+    def existing_rules
       directories.service.get_bucket_lifecycle(@bucket).data[:body]['Rules']
     rescue Excon::Errors::NotFound
       []
