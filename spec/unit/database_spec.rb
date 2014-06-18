@@ -201,5 +201,11 @@ describe Stratocumulus::Database do
       filename = "stratocumulus_test/stratocumulus_test.#{timestamp}.sql.gz"
       expect(subject.filename).to eq filename
     end
+
+    it 'stays the same for an instance even if time moves on' do
+      filename = subject.filename
+      allow(Time).to receive(:now).and_return(Time.now + 60 * 60 * 26)
+      expect(subject.filename).to eq filename
+    end
   end
 end

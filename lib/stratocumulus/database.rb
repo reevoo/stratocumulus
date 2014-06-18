@@ -18,7 +18,7 @@ module Stratocumulus
     end
 
     def filename
-      "#{@name}/#{@name}.#{Time.now.utc.strftime('%Y%m%d%H%M')}.sql.gz"
+      @filename ||= Time.now.utc.strftime("#{@name}/#{@name}.%Y%m%d%H%M.sql.gz")
     end
 
     private
