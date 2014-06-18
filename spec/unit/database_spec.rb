@@ -115,10 +115,20 @@ describe Stratocumulus::Database do
     end
 
     describe 'host' do
-      context 'default' do
+      context 'default with the port set' do
+        let(:config) { base_config.merge('port' => '3306') }
+
         it 'uses localhost' do
           expect(IO).to receive(:popen) do |command|
             expect(command).to include(' -hlocalhost ')
+          end
+        end
+      end
+
+      context 'default' do
+        it 'uses the default socket' do
+          expect(IO).to receive(:popen) do |command|
+            expect(command).to_not include(' -hlocalhost ')
           end
         end
       end
@@ -135,10 +145,20 @@ describe Stratocumulus::Database do
     end
 
     describe 'port' do
-      context 'default' do
+      context 'default with the host set' do
+        let(:config) { base_config.merge('host' => 'db.awesome-server.net') }
+
         it 'uses 3306' do
           expect(IO).to receive(:popen) do |command|
             expect(command).to include(' -P3306 ')
+          end
+        end
+      end
+
+      context 'default' do
+        it 'uses the default socket' do
+          expect(IO).to receive(:popen) do |command|
+            expect(command).to_not include(' -P3306 ')
           end
         end
       end

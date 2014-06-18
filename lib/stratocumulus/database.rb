@@ -7,8 +7,8 @@ module Stratocumulus
       @password = options['password']
       @name = options['name']
 
-      @host = options['host'] || 'localhost'
-      @port = options['port'] || 3306
+      @host = options['host']
+      @port = options['port']
 
       check_dependencies(options['type'])
     end
@@ -27,10 +27,22 @@ module Stratocumulus
       command = 'mysqldump '
       command << '--single-transaction '
       command << "-u#{@username} "
-      command << "-h#{@host} "
-      command << "-P#{@port} "
+      command << "-h#{host} " unless socket?
+      command << "-P#{port} " unless socket?
       command << "-p#{@password} " if @password
       command << @name
+    end
+
+    def host
+      @host || 'localhost'
+    end
+
+    def port
+      @port || 3306
+    end
+
+    def socket?
+      !@host && !@port
     end
 
     def pipefail
