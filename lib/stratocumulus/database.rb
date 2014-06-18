@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require 'stratocumulus/database/mysql'
+require 'stratocumulus/database/postgresql'
 require 'stratocumulus/database/pipe_io'
 require 'English'
 
@@ -43,10 +44,17 @@ module Stratocumulus
     end
 
     def setup_backend(backend_class, options)
-      backend_class ||= MySQL
       type = options['type']
-      fail "#{type} is not a supported database" unless type == 'mysql'
+      backend_class ||= backends[type]
+      fail "#{type} is not a supported database" unless backend_class
       @backend = backend_class.new(options)
+    end
+
+    def backends
+      {
+        'psql' => PostgreSQL,
+        'mysql' => MySQL
+      }
     end
   end
 end
