@@ -1,5 +1,6 @@
 # encoding: UTF-8
 require 'stratocumulus/database/mysql'
+require 'stratocumulus/database/pipe_io'
 require 'English'
 
 module Stratocumulus
@@ -12,7 +13,7 @@ module Stratocumulus
     end
 
     def dump
-      @dump ||= IO.popen("bash -c '#{pipefail} #{@backend.command} | gzip'")
+      @dump ||= PipeIO.popen("bash -c '#{pipefail} #{@backend.command} | gzip'")
     end
 
     def success?

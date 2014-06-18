@@ -1,6 +1,5 @@
 # encoding: UTF-8
 require 'fog'
-require 'stratocumulus/ext/io'
 require 'logger'
 
 module Stratocumulus
