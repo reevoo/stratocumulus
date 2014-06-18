@@ -1,6 +1,7 @@
 # encoding: UTF-8
 require 'fog'
 require 'stratocumulus/ext/io'
+require 'logger'
 
 module Stratocumulus
   class Storage
@@ -14,7 +15,18 @@ module Stratocumulus
 
     def upload(database)
       return unless @retention.upload_today?
-      add_expiry_rule(database.filename)
+      file = store_file(database)
+      if database.success?
+        add_expiry_rule(database.filename)
+      else
+        log.error("there was an error generating #{database.filename}")
+        file.destroy
+      end
+    end
+
+    private
+
+    def store_file(database)
       files.create(
         key: database.filename,
         body: database.dump,
@@ -22,8 +34,6 @@ module Stratocumulus
         public: false
       )
     end
-
-    private
 
     def connection
       Fog::Storage.new(
@@ -61,6 +71,10 @@ module Stratocumulus
       directories.service.get_bucket_lifecycle(@bucket).data[:body]['Rules']
     rescue Excon::Errors::NotFound
       []
+    end
+
+    def log
+      Logger.new(STDERR)
     end
   end
 end

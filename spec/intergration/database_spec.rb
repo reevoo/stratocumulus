@@ -21,9 +21,10 @@ describe Stratocumulus::Database do
 
     let(:dump) { Zlib::GzipReader.new(subject.dump).read }
 
-    it 'dumps a gziped copy of the database' do
+    it 'sucessfully dumps a gziped copy of the database' do
       expect(dump).to include('CREATE TABLE `widgets`')
       expect(dump).to include("INSERT INTO `widgets` VALUES (1,'Foo',3,1,2)")
+      expect(subject).to be_success
     end
   end
 end

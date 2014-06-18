@@ -208,4 +208,52 @@ describe Stratocumulus::Database do
       expect(subject.filename).to eq filename
     end
   end
+
+  describe '#success?' do
+    subject  do
+      described_class.new(
+        { 'name' => 'foo', 'type' => 'mysql' },
+        backend
+      )
+    end
+
+    context 'the backend fails' do
+      let(:backend) { FailingBackend }
+
+      it 'returns false' do
+        expect(subject).to_not be_success
+      end
+
+    end
+
+    context 'the backend is sucessfull' do
+      let(:backend) { SucessBackend }
+
+      it 'returns true' do
+        expect(subject).to be_success
+      end
+
+    end
+
+    class FakeBackend
+      def initialize(*)
+      end
+
+      def dependencies
+        []
+      end
+    end
+
+    class FailingBackend < FakeBackend
+      def command
+        'exit 127'
+      end
+    end
+
+    class SucessBackend < FakeBackend
+      def command
+        'exit 0'
+      end
+    end
+  end
 end

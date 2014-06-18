@@ -18,10 +18,16 @@ describe Stratocumulus::Storage do
   describe '#upload' do
     let(:connection) { double(:fog_conn, directories: directories) }
     let(:directories) { double(:fog_dirs, get: double(files: files)) }
-    let(:files) { double(:fog_files, create: true) }
+    let(:files) { double(:fog_files, create: file) }
+    let(:file) { double }
 
     let(:database) do
-      double(:database, filename: 'foo.sql.gz', dump: :database_dump)
+      double(
+        :database,
+        filename: 'foo.sql.gz',
+        dump: :database_dump,
+        success?: true
+      )
     end
 
     before do
@@ -92,6 +98,29 @@ describe Stratocumulus::Storage do
                 }
               ]
             )
+        end
+      end
+
+      context 'when the database is not sucessfull' do
+        let(:database) do
+          double(
+            :database,
+            filename: 'foo.sql.gz',
+            dump: :database_dump,
+            success?: false
+          )
+        end
+
+        before do
+          allow(file).to receive(:destroy)
+        end
+
+        it 'destroys the failing dump' do
+          expect(file).to receive(:destroy)
+        end
+
+        it 'does not create a expiry rule' do
+          expect(service).to_not receive(:put_bucket_lifecycle)
         end
       end
 
