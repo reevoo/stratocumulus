@@ -15,7 +15,7 @@ module Stratocumulus
       end
 
       def dependencies
-        ['pg_dump']
+        super + ['pg_dump']
       end
 
       private

@@ -15,7 +15,7 @@ module Stratocumulus
       end
 
       def dependencies
-        ['mysqldump']
+        super + ['mysqldump']
       end
 
       private

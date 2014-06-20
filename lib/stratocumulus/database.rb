@@ -1,8 +1,7 @@
 # encoding: UTF-8
 require 'stratocumulus/database/mysql'
 require 'stratocumulus/database/postgresql'
-require 'stratocumulus/database/pipe_io'
-require 'English'
+require 'stratocumulus/database/rethinkdb'
 
 module Stratocumulus
   class Database
@@ -10,50 +9,33 @@ module Stratocumulus
       @name = options['name']
       fail 'database name not specified' unless @name
       setup_backend(backend_class, options)
-      check_dependencies
     end
 
     def dump
-      @dump ||= PipeIO.popen("bash -c '#{pipefail} #{@backend.command} | gzip'")
-    end
-
-    def success?
-      dump.read
-      dump.close
-      $CHILD_STATUS.success?
+      @backend.dump
     end
 
     def filename
-      @filename ||= Time.now.utc.strftime("#{@name}/#{@name}.%Y%m%d%H%M.sql.gz")
+      @backend.filename
+    end
+
+    def success?
+      @backend.success?
     end
 
     private
 
-    def pipefail
-      'set -o pipefail;'
-    end
-
-    def check_dependencies
-      dependencies.each do |cmd|
-        fail "#{cmd} not available" unless system("which #{cmd} >/dev/null")
-      end
-    end
-
-    def dependencies
-      ['gzip'] + @backend.dependencies
-    end
-
     def setup_backend(backend_class, options)
-      type = options['type']
-      backend_class ||= backends[type]
-      fail "#{type} is not a supported database" unless backend_class
+      backend_class ||= backends[options['type']]
+      fail "#{options['type']} is not a supported database" unless backend_class
       @backend = backend_class.new(options)
     end
 
     def backends
       {
         'psql' => PostgreSQL,
-        'mysql' => MySQL
+        'mysql' => MySQL,
+        'rethinkdb' => RethinkDB
       }
     end
   end

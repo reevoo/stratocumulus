@@ -12,7 +12,7 @@ describe Stratocumulus::Database::MySQL do
 
   describe '#dependencies' do
     specify do
-      expect(subject.dependencies).to eq ['mysqldump']
+      expect(subject.dependencies).to eq %w(gzip mysqldump)
     end
   end
 

@@ -12,7 +12,7 @@ describe Stratocumulus::Database::PostgreSQL do
 
   describe '#dependencies' do
     specify do
-      expect(subject.dependencies).to eq ['pg_dump']
+      expect(subject.dependencies).to eq %w(gzip pg_dump)
     end
   end
 

@@ -19,7 +19,12 @@ describe Stratocumulus::Database do
   let(:type) { 'mysql' }
 
   before do
-    allow_any_instance_of(described_class).to receive(:system).and_return(true)
+    allow_any_instance_of(Stratocumulus::Database::MySQL).to(
+      receive(:system).and_return(true)
+    )
+    allow_any_instance_of(Stratocumulus::Database::PostgreSQL).to(
+      receive(:system).and_return(true)
+    )
   end
 
   describe '.new' do
@@ -36,7 +41,7 @@ describe Stratocumulus::Database do
 
     context 'mysql' do
       it 'throws an error if mysqldump is not installed' do
-        allow_any_instance_of(described_class)
+        allow_any_instance_of(Stratocumulus::Database::MySQL)
         .to  receive(:system).with(/which mysqldump/)
 
         expect { subject }.to raise_error(
@@ -50,7 +55,7 @@ describe Stratocumulus::Database do
       let(:type) { 'psql' }
 
       it 'throws an error if pg_dump is not installed' do
-        allow_any_instance_of(described_class)
+        allow_any_instance_of(Stratocumulus::Database::PostgreSQL)
         .to  receive(:system).with(/which pg_dump/)
 
         expect { subject }.to raise_error(
@@ -61,7 +66,7 @@ describe Stratocumulus::Database do
     end
 
     it 'throws an error if gzip is not installed' do
-      allow_any_instance_of(described_class)
+      allow_any_instance_of(Stratocumulus::Database::MySQL)
         .to receive(:system).with(/which gzip/)
 
       expect { subject }.to raise_error(
@@ -86,26 +91,6 @@ describe Stratocumulus::Database do
     end
   end
 
-  describe 'dump' do
-
-    subject do
-      described_class.new(
-        base_config,
-        ScaryBackend
-      )
-    end
-
-    after do
-      subject.dump
-    end
-
-    it 'uses the command from the backend | gzip' do
-      expect(IO).to receive(:popen) do |command|
-        expect(command).to eq "bash -c 'set -o pipefail; echo boo | gzip'"
-      end
-    end
-  end
-
   describe '#filename' do
     it 'calculates a filename based on the name and timestamp' do
       timestamp = Time.now.utc.strftime('%Y%m%d%H%M')
@@ -117,60 +102,6 @@ describe Stratocumulus::Database do
       filename = subject.filename
       allow(Time).to receive(:now).and_return(Time.now + 60 * 60 * 26)
       expect(subject.filename).to eq filename
-    end
-  end
-
-  describe '#success?' do
-    subject  do
-      described_class.new(
-        base_config,
-        backend
-      )
-    end
-
-    context 'the backend fails' do
-      let(:backend) { FailingBackend }
-
-      it 'returns false' do
-        expect(subject).to_not be_success
-      end
-
-    end
-
-    context 'the backend is sucessfull' do
-      let(:backend) { SucessBackend }
-
-      it 'returns true' do
-        expect(subject).to be_success
-      end
-
-    end
-
-    class FakeBackend
-      def initialize(*)
-      end
-
-      def dependencies
-        []
-      end
-    end
-
-    class FailingBackend < FakeBackend
-      def command
-        'exit 127'
-      end
-    end
-
-    class SucessBackend < FakeBackend
-      def command
-        'exit 0'
-      end
-    end
-
-    class ScaryBackend < FakeBackend
-      def command
-        'echo boo'
-      end
     end
   end
 end
