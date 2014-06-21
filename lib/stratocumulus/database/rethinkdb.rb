@@ -6,7 +6,8 @@ module Stratocumulus
   class Database
     class RethinkDB < Base
       def dump
-        @success = system(command)
+        `#{command}`
+        @success = $CHILD_STATUS.success?
         File.open(path)
       end
 
