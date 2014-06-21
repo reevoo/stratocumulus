@@ -1,6 +1,7 @@
 # encoding: UTF-8
 require 'simplecov'
 require 'coveralls'
+require 'stringio'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
@@ -31,4 +32,14 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.syntax = :expect
   end
+end
+
+def capture_stderr
+  old_stderr = $stderr
+  fake_stderr = StringIO.new
+  $stderr = fake_stderr
+  yield
+  fake_stderr.string
+ensure
+  $stdout = old_stderr
 end

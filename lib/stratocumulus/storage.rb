@@ -73,7 +73,7 @@ module Stratocumulus
     end
 
     def log
-      Logger.new(STDERR)
+      Logger.new($stderr)
     end
   end
 end

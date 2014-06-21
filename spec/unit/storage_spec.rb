@@ -30,12 +30,18 @@ describe Stratocumulus::Storage do
       )
     end
 
+    let(:stderr) do
+      capture_stderr do
+        subject.upload(database)
+      end
+    end
+
     before do
       allow(Fog::Storage).to receive(:new).and_return(connection)
     end
 
     after do
-      subject.upload(database)
+      stderr
     end
 
     it 'uploads the dump to s3' do
@@ -121,6 +127,12 @@ describe Stratocumulus::Storage do
 
         it 'does not create a expiry rule' do
           expect(service).to_not receive(:put_bucket_lifecycle)
+        end
+
+        it 'logs the error to stderr' do
+          expect(stderr).to include(
+            'ERROR -- : there was an error generating foo.sql.gz'
+          )
         end
       end
 
