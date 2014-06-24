@@ -4,7 +4,7 @@ require 'spec_helper'
 describe Stratocumulus::Database do
 
   subject do
-    described_class.new(config)
+    described_class.build(config)
   end
 
   let(:config) { base_config }
@@ -19,10 +19,7 @@ describe Stratocumulus::Database do
   let(:type) { 'mysql' }
 
   before do
-    allow_any_instance_of(Stratocumulus::Database::MySQL).to(
-      receive(:system).and_return(true)
-    )
-    allow_any_instance_of(Stratocumulus::Database::PostgreSQL).to(
+    allow_any_instance_of(Stratocumulus::Database).to(
       receive(:system).and_return(true)
     )
   end
@@ -41,8 +38,9 @@ describe Stratocumulus::Database do
 
     context 'mysql' do
       it 'throws an error if mysqldump is not installed' do
-        allow_any_instance_of(Stratocumulus::Database::MySQL)
-        .to  receive(:system).with(/which mysqldump/)
+        allow_any_instance_of(Stratocumulus::Database).to(
+          receive(:system).with(/which mysqldump/)
+        )
 
         expect { subject }.to raise_error(
           RuntimeError,
@@ -55,7 +53,7 @@ describe Stratocumulus::Database do
       let(:type) { 'psql' }
 
       it 'throws an error if pg_dump is not installed' do
-        allow_any_instance_of(Stratocumulus::Database::PostgreSQL)
+        allow_any_instance_of(Stratocumulus::Database)
         .to  receive(:system).with(/which pg_dump/)
 
         expect { subject }.to raise_error(
@@ -66,7 +64,7 @@ describe Stratocumulus::Database do
     end
 
     it 'throws an error if gzip is not installed' do
-      allow_any_instance_of(Stratocumulus::Database::MySQL)
+      allow_any_instance_of(Stratocumulus::Database)
         .to receive(:system).with(/which gzip/)
 
       expect { subject }.to raise_error(
@@ -102,6 +100,36 @@ describe Stratocumulus::Database do
       filename = subject.filename
       allow(Time).to receive(:now).and_return(Time.now + 60 * 60 * 26)
       expect(subject.filename).to eq filename
+    end
+  end
+
+  describe '#success?' do
+    describe 'the dump fails' do
+      subject { FailingDatabase.new('name' => 'test_database') }
+
+      it 'returns false' do
+        expect(subject).to_not be_success
+      end
+    end
+
+    describe 'the dump is sucessfull' do
+      subject { SucessDatabase.new('name' => 'test_database') }
+
+      it 'returns false' do
+        expect(subject).to be_success
+      end
+    end
+  end
+
+  class SucessDatabase < described_class
+    def command
+      'echo boo'
+    end
+  end
+
+  class FailingDatabase < described_class
+    def command
+      'exit 127'
     end
   end
 end

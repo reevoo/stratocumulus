@@ -1,36 +1,34 @@
 # encoding: UTF-8
-require 'stratocumulus/database/base'
+require 'stratocumulus/database'
 
 module Stratocumulus
-  class Database
-    class PostgreSQL < Base
-      def command
-        command = ''
-        command << %Q(PGPASSWORD="#{@password}" ) if @password
-        command << 'pg_dump '
-        command << "-U#{username} "
-        command << "-h#{host} " unless socket?
-        command << "-p#{port} " unless socket?
-        command << @name
-      end
+  class PostgreSQL < Database
+    def command
+      command = ''
+      command << %Q(PGPASSWORD="#{@password}" ) if @password
+      command << 'pg_dump '
+      command << "-U#{username} "
+      command << "-h#{host} " unless socket?
+      command << "-p#{port} " unless socket?
+      command << @name
+    end
 
-      def dependencies
-        super + ['pg_dump']
-      end
+    def dependencies
+      super + ['pg_dump']
+    end
 
-      private
+    private
 
-      def username
-        @username || 'postgres'
-      end
+    def username
+      @username || 'postgres'
+    end
 
-      def host
-        @host || 'localhost'
-      end
+    def host
+      @host || 'localhost'
+    end
 
-      def port
-        @port || 5432
-      end
+    def port
+      @port || 5432
     end
   end
 end

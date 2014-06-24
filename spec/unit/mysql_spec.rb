@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require 'spec_helper'
 
-describe Stratocumulus::Database::MySQL do
+describe Stratocumulus::MySQL do
   subject do
     described_class.new(config)
   end

@@ -6,7 +6,7 @@ require 'rubygems/package'
 describe Stratocumulus::Database do
 
   subject do
-    described_class.new(config)
+    described_class.build(config)
   end
 
   let('config') do

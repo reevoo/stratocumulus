@@ -1,7 +1,7 @@
 # encoding: UTF-8
 require 'spec_helper'
 
-describe Stratocumulus::Database::PostgreSQL do
+describe Stratocumulus::PostgreSQL do
   subject do
     described_class.new(config)
   end

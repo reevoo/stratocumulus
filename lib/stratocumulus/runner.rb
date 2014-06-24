@@ -8,7 +8,7 @@ module Stratocumulus
 
     def run
       @config['databases'].each do |database_config|
-        database = Database.new(database_config)
+        database = Database.build(database_config)
         upload(database, database_config['storage'])
       end
     end
