@@ -1,11 +1,11 @@
 # encoding: UTF-8
 require 'simplecov'
-require 'coveralls'
+require 'codeclimate-test-reporter'
 require 'stringio'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
+  CodeClimate::TestReporter::Formatter
 ]
 
 SimpleCov.start do
