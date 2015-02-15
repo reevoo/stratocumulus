@@ -30,7 +30,7 @@ module Stratocumulus
         key: database.filename,
         body: database.dump,
         multipart_chunk_size: 104_857_600, # 100MB
-        public: false
+        public: false,
       )
     end
 
@@ -39,7 +39,7 @@ module Stratocumulus
         provider: 'AWS',
         aws_access_key_id: @access_key_id,
         aws_secret_access_key: @secret_access_key,
-        region: @region
+        region: @region,
       )
     end
 
@@ -56,7 +56,7 @@ module Stratocumulus
       return unless new_rule
       directories.service.put_bucket_lifecycle(
         @bucket,
-        'Rules' => current_rules << new_rule
+        'Rules' => current_rules << new_rule,
       )
     end
 

@@ -20,7 +20,7 @@ describe Stratocumulus::MySQL do
     context 'default' do
       it 'generates the dump command with sensible defaults' do
         expect(subject.command).to eq(
-          'mysqldump --single-transaction -uroot stratocumulus_test'
+          'mysqldump --single-transaction -uroot stratocumulus_test',
         )
       end
     end
@@ -29,13 +29,13 @@ describe Stratocumulus::MySQL do
       let(:config) do
         {
           'name' => 'stratocumulus_test',
-          'password' => 'seecrit'
+          'password' => 'seecrit',
         }
       end
 
       it 'generates the dump command with a default host' do
         expect(subject.command).to eq(
-          'mysqldump --single-transaction -uroot -pseecrit stratocumulus_test'
+          'mysqldump --single-transaction -uroot -pseecrit stratocumulus_test',
         )
       end
     end
@@ -44,13 +44,13 @@ describe Stratocumulus::MySQL do
       let(:config) do
         {
           'name' => 'stratocumulus_test',
-          'port' => 13_306
+          'port' => 13_306,
         }
       end
 
       it 'generates the dump command with a default host' do
         expect(subject.command).to eq(
-          'mysqldump --single-transaction -uroot -hlocalhost -P13306 stratocumulus_test' # rubocop:disable Style/LineLength
+          'mysqldump --single-transaction -uroot -hlocalhost -P13306 stratocumulus_test' # rubocop:disable Metrics/LineLength
         )
       end
     end
@@ -59,13 +59,13 @@ describe Stratocumulus::MySQL do
       let(:config) do
         {
           'name' => 'stratocumulus_test',
-          'host' => 'db.example.com'
+          'host' => 'db.example.com',
         }
       end
 
       it 'generates the dump command with a default port' do
         expect(subject.command).to eq(
-          'mysqldump --single-transaction -uroot -hdb.example.com -P3306 stratocumulus_test' # rubocop:disable Style/LineLength
+          'mysqldump --single-transaction -uroot -hdb.example.com -P3306 stratocumulus_test' # rubocop:disable Metrics/LineLength
         )
       end
     end
@@ -75,13 +75,13 @@ describe Stratocumulus::MySQL do
         {
           'name' => 'stratocumulus_test',
           'port' => 33_306,
-          'host' => 'db.example.com'
+          'host' => 'db.example.com',
         }
       end
 
       it 'generates the dump command with the port and host' do
         expect(subject.command).to eq(
-          'mysqldump --single-transaction -uroot -hdb.example.com -P33306 stratocumulus_test' # rubocop:disable Style/LineLength
+          'mysqldump --single-transaction -uroot -hdb.example.com -P33306 stratocumulus_test' # rubocop:disable Metrics/LineLength
         )
       end
     end
@@ -90,13 +90,13 @@ describe Stratocumulus::MySQL do
       let(:config) do
         {
           'name' => 'stratocumulus_test',
-          'username' => 'susan'
+          'username' => 'susan',
         }
       end
 
       it 'generates the dump command with the username' do
         expect(subject.command).to eq(
-          'mysqldump --single-transaction -ususan stratocumulus_test'
+          'mysqldump --single-transaction -ususan stratocumulus_test',
         )
       end
     end

@@ -24,7 +24,7 @@ end
 describe IO do
   subject do
     described_class.open(
-      described_class.sysopen('spec/support/test_config_file.yml')
+      described_class.sysopen('spec/support/test_config_file.yml'),
     )
   end
 

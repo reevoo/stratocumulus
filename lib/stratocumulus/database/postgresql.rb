@@ -5,7 +5,7 @@ module Stratocumulus
   class PostgreSQL < Database
     def command
       command = ''
-      command << %Q(PGPASSWORD="#{@password}" ) if @password
+      command << %(PGPASSWORD="#{@password}" ) if @password
       command << 'pg_dump '
       command << "-U#{username} "
       command << "-h#{host} " unless socket?

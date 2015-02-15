@@ -1,9 +1,9 @@
 # encoding: UTF-8
 require 'bundler/gem_tasks'
-require 'rubocop/rake_task'
+require 'reevoocop/rake_task'
 require 'rspec/core/rake_task'
 
-RuboCop::RakeTask.new
+ReevooCop::RakeTask.new(:reevoocop)
 RSpec::Core::RakeTask.new(:spec)
 
-task default: [:spec, :rubocop]
+task default: [:spec, :reevoocop]

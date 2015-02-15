@@ -12,7 +12,7 @@ describe Stratocumulus::Database do
   let('config') do
     {
       'name' => 'stratocumulus_test',
-      'type' => type
+      'type' => type,
     }
   end
 
@@ -43,7 +43,7 @@ describe Stratocumulus::Database do
       it 'sucessfully dumps a gziped copy of the database' do
         expect(dump).to include('CREATE TABLE widgets')
         expect(dump).to include(
-          'COPY widgets (id, name, leavers, pivots, fulcrums) FROM stdin;'
+          'COPY widgets (id, name, leavers, pivots, fulcrums) FROM stdin;',
         )
         expect(dump).to include('1	Foo	3	1	2')
         expect(subject).to be_success
@@ -68,7 +68,7 @@ describe Stratocumulus::Database do
 
       let(:expected_data) do
         [
-          # rubocop:disable Style/LineLength
+          # rubocop:disable Metrics/LineLength
           { 'pivots' => 5, 'fulcrums' => 3, 'leavers' => 8, 'id' => '1c66308d-492e-48ee-bfc5-83de96a15236', 'name' => 'Plugh' },
           { 'pivots' => 2, 'fulcrums' => 3, 'leavers' => 1, 'id' => '224ba4b1-2184-4905-b81b-ac6368480f43', 'name' => 'Thud' },
           { 'pivots' => 2, 'fulcrums' => 3, 'leavers' => 1, 'id' => '25b68062-7e9f-4fca-92bf-672287961096', 'name' => 'Garply' },
@@ -82,7 +82,7 @@ describe Stratocumulus::Database do
           { 'pivots' => 0, 'fulcrums' => 0, 'leavers' => 0, 'id' => 'f47bcc2a-ae2a-4d5f-9bbf-df71c8d81a7a', 'name' => 'Waldo' },
           { 'pivots' => 6, 'fulcrums' => 4, 'leavers' => 5, 'id' => 'f6745b27-b0c8-40ca-a472-dbe45310ee19', 'name' => 'Baz' },
           { 'pivots' => 1, 'fulcrums' => 1, 'leavers' => 1, 'id' => 'f88a0196-faaa-4695-88f1-808555a68ffa', 'name' => 'Fred' }
-          # rubocop:enable Style/LineLength
+          # rubocop:enable Metrics/LineLength
         ]
       end
 

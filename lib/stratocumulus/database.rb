@@ -17,7 +17,7 @@ module Stratocumulus
       {
         'psql' => PostgreSQL,
         'mysql' => MySQL,
-        'rethinkdb' => RethinkDB
+        'rethinkdb' => RethinkDB,
       }
     end
 

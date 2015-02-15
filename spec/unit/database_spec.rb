@@ -12,7 +12,7 @@ describe Stratocumulus::Database do
   let(:base_config) do
     {
       'name' => 'stratocumulus_test',
-      'type' => type
+      'type' => type,
     }
   end
 
@@ -20,7 +20,7 @@ describe Stratocumulus::Database do
 
   before do
     allow_any_instance_of(Stratocumulus::Database).to(
-      receive(:system).and_return(true)
+      receive(:system).and_return(true),
     )
   end
 
@@ -31,7 +31,7 @@ describe Stratocumulus::Database do
       it 'thows an error unless the type is supported' do
         expect { subject }.to raise_error(
           RuntimeError,
-          'nosqlioid is not a supported database'
+          'nosqlioid is not a supported database',
         )
       end
     end
@@ -39,12 +39,12 @@ describe Stratocumulus::Database do
     context 'mysql' do
       it 'throws an error if mysqldump is not installed' do
         allow_any_instance_of(Stratocumulus::Database).to(
-          receive(:system).with(/which mysqldump/)
+          receive(:system).with(/which mysqldump/),
         )
 
         expect { subject }.to raise_error(
           RuntimeError,
-          'mysqldump not available'
+          'mysqldump not available',
         )
       end
     end
@@ -54,11 +54,11 @@ describe Stratocumulus::Database do
 
       it 'throws an error if pg_dump is not installed' do
         allow_any_instance_of(Stratocumulus::Database)
-        .to  receive(:system).with(/which pg_dump/)
+          .to  receive(:system).with(/which pg_dump/)
 
         expect { subject }.to raise_error(
           RuntimeError,
-          'pg_dump not available'
+          'pg_dump not available',
         )
       end
     end
@@ -69,7 +69,7 @@ describe Stratocumulus::Database do
 
       expect { subject }.to raise_error(
         RuntimeError,
-        'gzip not available'
+        'gzip not available',
       )
     end
 
@@ -82,7 +82,7 @@ describe Stratocumulus::Database do
       it 'throws an error' do
         expect { subject }.to raise_error(
           RuntimeError,
-          'database name not specified'
+          'database name not specified',
         )
       end
 

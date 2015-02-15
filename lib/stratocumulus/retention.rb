@@ -13,7 +13,7 @@ module Stratocumulus
         'ID' => key,
         'Prefix' => key,
         'Enabled' => true,
-        'Days' => expires_in_days
+        'Days' => expires_in_days,
       }
     end
 

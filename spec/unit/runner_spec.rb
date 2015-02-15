@@ -21,7 +21,7 @@ describe Stratocumulus::Runner do
       'secret_access_key' => 'IamTHESekret',
       'bucket' => 'stratocumulus-test',
       'region' => 'eu-west1',
-      'retention' => { 1 => 30, 30 => 12 }
+      'retention' => { 1 => 30, 30 => 12 },
     ).and_return(storage)
   end
 
@@ -33,23 +33,23 @@ describe Stratocumulus::Runner do
       'username' => 'root',
       'password' => 'sekret',
       'host' => 'db1.example.com',
-      'port' => 3307
+      'port' => 3307,
     )
 
     expect(Stratocumulus::Database).to receive(:new).once.with(
       'type' => 'mysql',
       'name' => 'stratocumulus_test_2',
-      'storage' => 's3'
+      'storage' => 's3',
     )
   end
 
   it 'uploads each database to storage' do
     allow(Stratocumulus::Database).to receive(:new).once.with(
-      hash_including('name' => 'stratocumulus_test')
+      hash_including('name' => 'stratocumulus_test'),
     ).and_return(database)
 
     allow(Stratocumulus::Database).to receive(:new).once.with(
-      hash_including('name' => 'stratocumulus_test_2')
+      hash_including('name' => 'stratocumulus_test_2'),
     ).and_return(database2)
 
     expect(storage).to receive(:upload).once.with(database)

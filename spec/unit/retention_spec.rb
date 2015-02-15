@@ -8,7 +8,7 @@ describe Stratocumulus::Retention do
     {
       1 => 30,
       7 => 8,
-      30 => 12
+      30 => 12,
     }
   end
 
@@ -36,7 +36,7 @@ describe Stratocumulus::Retention do
         'Days' => 360,
         'Enabled' => true,
         'ID' => key,
-        'Prefix' => key
+        'Prefix' => key,
       )
     end
 

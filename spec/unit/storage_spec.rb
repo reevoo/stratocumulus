@@ -7,7 +7,7 @@ describe Stratocumulus::Storage do
       'access_key_id' => 'IM_A_ID',
       'secret_access_key' => 'IM_A_SEKRET_KEY',
       'region' =>  'eu-west-1',
-      'bucket' =>  'stratocumulus-test'
+      'bucket' =>  'stratocumulus-test',
     }
   end
 
@@ -26,7 +26,7 @@ describe Stratocumulus::Storage do
         :database,
         filename: 'foo.sql.gz',
         dump: :database_dump,
-        success?: true
+        success?: true,
       )
     end
 
@@ -49,7 +49,7 @@ describe Stratocumulus::Storage do
         key: 'foo.sql.gz',
         body: :database_dump,
         multipart_chunk_size: 104_857_600,
-        public: false
+        public: false,
       )
     end
 
@@ -60,12 +60,12 @@ describe Stratocumulus::Storage do
     describe 'the fog connection' do
       it 'is setup corectly' do
         expect(Fog::Storage).to receive(:new)
-        .with(
-          provider: 'AWS',
-          aws_access_key_id: 'IM_A_ID',
-          aws_secret_access_key: 'IM_A_SEKRET_KEY',
-          region: 'eu-west-1'
-        ).and_return(connection)
+          .with(
+            provider: 'AWS',
+            aws_access_key_id: 'IM_A_ID',
+            aws_secret_access_key: 'IM_A_SEKRET_KEY',
+            region: 'eu-west-1',
+          ).and_return(connection)
       end
     end
 
@@ -73,8 +73,8 @@ describe Stratocumulus::Storage do
       let(:config) do
         base_config.merge(
           'retention' => {
-            1 => 30
-          }
+            1 => 30,
+          },
         )
       end
 
@@ -100,9 +100,9 @@ describe Stratocumulus::Storage do
                   'ID' => 'foo.sql.gz',
                   'Prefix' => 'foo.sql.gz',
                   'Enabled' => true,
-                  'Days' => 30
-                }
-              ]
+                  'Days' => 30,
+                },
+              ],
             )
         end
       end
@@ -113,7 +113,7 @@ describe Stratocumulus::Storage do
             :database,
             filename: 'foo.sql.gz',
             dump: :database_dump,
-            success?: false
+            success?: false,
           )
         end
 
@@ -131,7 +131,7 @@ describe Stratocumulus::Storage do
 
         it 'logs the error to stderr' do
           expect(stderr).to include(
-            'ERROR -- : there was an error generating foo.sql.gz'
+            'ERROR -- : there was an error generating foo.sql.gz',
           )
         end
       end
@@ -145,14 +145,14 @@ describe Stratocumulus::Storage do
               'ID' => 'bar.sql.gz',
               'Prefix' => 'bar.sql.gz',
               'Enabled' => true,
-              'Days' => 30
+              'Days' => 30,
             },
             {
               'ID' => 'baz.sql.gz',
               'Prefix' => 'baz.sql.gz',
               'Enabled' => true,
-              'Days' => 30
-            }
+              'Days' => 30,
+            },
           ]
         end
 
@@ -163,10 +163,10 @@ describe Stratocumulus::Storage do
               double(
                 data: {
                   body: {
-                    'Rules' => existing_rules
-                  }
-                }
-              )
+                    'Rules' => existing_rules,
+                  },
+                },
+              ),
             )
           allow(files).to receive(:create).and_return(:true)
         end
@@ -179,15 +179,15 @@ describe Stratocumulus::Storage do
                 'ID' => 'bar.sql.gz',
                 'Prefix' => 'bar.sql.gz',
                 'Enabled' => true,
-                'Days' => 30
+                'Days' => 30,
               },
               {
                 'ID' => 'foo.sql.gz',
                 'Prefix' => 'foo.sql.gz',
                 'Enabled' => true,
-                'Days' => 30
-              }
-            ]
+                'Days' => 30,
+              },
+            ],
           )
         end
       end
