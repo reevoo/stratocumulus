@@ -44,13 +44,32 @@ describe Stratocumulus::Storage do
       stderr
     end
 
-    it "uploads the dump to s3" do
-      expect(files).to receive(:create).with(
-        key: "foo.sql.gz",
-        body: :database_dump,
-        multipart_chunk_size: 104_857_600,
-        public: false,
-      )
+    context "without specified folder" do
+      it "uploads the dump to s3" do
+        expect(files).to receive(:create).with(
+          key: "foo.sql.gz",
+          body: :database_dump,
+          multipart_chunk_size: 104_857_600,
+          public: false,
+        )
+      end
+    end
+
+    context "with specified folder" do
+      let(:config) do
+        base_config.merge(
+          "folder" => "folder",
+        )
+      end
+
+      it "uploads the dump to s3 in the right folder" do
+        expect(files).to receive(:create).with(
+          key: "folder/foo.sql.gz",
+          body: :database_dump,
+          multipart_chunk_size: 104_857_600,
+          public: false,
+        )
+      end
     end
 
     it "uploads to the correct s3 bucket" do

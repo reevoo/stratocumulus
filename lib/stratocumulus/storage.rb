@@ -9,6 +9,7 @@ module Stratocumulus
       @secret_access_key = options.fetch("secret_access_key")
       @region = options["region"]
       @bucket = options.fetch("bucket")
+      @folder = options["folder"]
       @retention = Retention.new(options["retention"])
     end
 
@@ -16,7 +17,7 @@ module Stratocumulus
       return unless @retention.upload_today?
       file = store_file(database)
       if database.success?
-        add_expiry_rule(database.filename)
+        add_expiry_rule(destination_path(database.filename))
       else
         log.error("there was an error generating #{database.filename}")
         file.destroy
@@ -27,11 +28,15 @@ module Stratocumulus
 
     def store_file(database)
       files.create(
-        key: database.filename,
+        key: destination_path(database.filename),
         body: database.dump,
         multipart_chunk_size: 104_857_600, # 100MB
         public: false,
       )
+    end
+
+    def destination_path(filename)
+      @folder.nil? ? filename : @folder + "/" + filename
     end
 
     def connection
