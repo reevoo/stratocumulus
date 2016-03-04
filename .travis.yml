@@ -1,9 +1,8 @@
 language: ruby
 rvm:
-  - 2.2.0
-  - 2.1.5
-  - 2.0.0
-  - 1.9.3
+  - 2.3.0
+  - 2.2.4
+  - 2.1.8
 env: CODECLIMATE_REPO_TOKEN=650676b7530bf62fce4284e263272a8dcab015f4f34fe6dab251ead2ea6b4813
 before_install:
   - source /etc/lsb-release && echo "deb http://download.rethinkdb.com/apt $DISTRIB_CODENAME main" | sudo tee /etc/apt/sources.list.d/rethinkdb.list
