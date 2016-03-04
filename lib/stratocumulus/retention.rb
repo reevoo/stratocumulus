@@ -10,10 +10,10 @@ module Stratocumulus
       return unless expires_in_days
 
       {
-        'ID' => key,
-        'Prefix' => key,
-        'Enabled' => true,
-        'Days' => expires_in_days,
+        "ID" => key,
+        "Prefix" => key,
+        "Enabled" => true,
+        "Days" => expires_in_days,
       }
     end
 

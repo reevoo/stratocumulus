@@ -1,15 +1,15 @@
 # encoding: UTF-8
-require 'fog'
-require 'logger'
+require "fog"
+require "logger"
 
 module Stratocumulus
   class Storage
     def initialize(options = {})
-      @access_key_id = options.fetch('access_key_id')
-      @secret_access_key = options.fetch('secret_access_key')
-      @region = options['region']
-      @bucket = options.fetch('bucket')
-      @retention = Retention.new(options['retention'])
+      @access_key_id = options.fetch("access_key_id")
+      @secret_access_key = options.fetch("secret_access_key")
+      @region = options["region"]
+      @bucket = options.fetch("bucket")
+      @retention = Retention.new(options["retention"])
     end
 
     def upload(database)
@@ -36,7 +36,7 @@ module Stratocumulus
 
     def connection
       Fog::Storage.new(
-        provider: 'AWS',
+        provider: "AWS",
         aws_access_key_id: @access_key_id,
         aws_secret_access_key: @secret_access_key,
         region: @region,
@@ -56,18 +56,18 @@ module Stratocumulus
       return unless new_rule
       directories.service.put_bucket_lifecycle(
         @bucket,
-        'Rules' => current_rules << new_rule,
+        "Rules" => current_rules << new_rule,
       )
     end
 
     def current_rules
       existing_rules.select do |rule|
-        files.find { |file| file.key == rule['ID'] }
+        files.find { |file| file.key == rule["ID"] }
       end
     end
 
     def existing_rules
-      directories.service.get_bucket_lifecycle(@bucket).data[:body]['Rules']
+      directories.service.get_bucket_lifecycle(@bucket).data[:body]["Rules"]
     rescue Excon::Errors::NotFound
       []
     end

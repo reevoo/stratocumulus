@@ -1,34 +1,34 @@
 # encoding: UTF-8
-require 'stratocumulus/database/pipe_io'
-require 'stratocumulus/database/mysql'
-require 'stratocumulus/database/postgresql'
-require 'stratocumulus/database/rethinkdb'
-require 'English'
+require "stratocumulus/database/pipe_io"
+require "stratocumulus/database/mysql"
+require "stratocumulus/database/postgresql"
+require "stratocumulus/database/rethinkdb"
+require "English"
 
 module Stratocumulus
   class Database
     def self.build(options = {})
-      backend_class = backends[options['type']]
-      fail "#{options['type']} is not a supported database" unless backend_class
+      backend_class = backends[options["type"]]
+      fail "#{options["type"]} is not a supported database" unless backend_class
       backend_class.new(options)
     end
 
     def self.backends
       {
-        'psql' => PostgreSQL,
-        'mysql' => MySQL,
-        'rethinkdb' => RethinkDB,
+        "psql" => PostgreSQL,
+        "mysql" => MySQL,
+        "rethinkdb" => RethinkDB,
       }
     end
 
     def initialize(options = {})
       check_dependencies
-      @username = options['username']
-      @password = options['password']
-      @name = options['name']
-      fail 'database name not specified' unless @name
-      @host = options['host']
-      @port = options['port']
+      @username = options["username"]
+      @password = options["password"]
+      @name = options["name"]
+      fail "database name not specified" unless @name
+      @host = options["host"]
+      @port = options["port"]
     end
 
     def dump
@@ -36,7 +36,7 @@ module Stratocumulus
     end
 
     def filename
-      @name + '/' + file
+      @name + "/" + file
     end
 
     def success?
@@ -46,7 +46,7 @@ module Stratocumulus
     end
 
     def dependencies
-      ['gzip']
+      ["gzip"]
     end
 
     private
@@ -62,11 +62,11 @@ module Stratocumulus
     end
 
     def suffix
-      '.sql.gz'
+      ".sql.gz"
     end
 
     def pipefail
-      'set -o pipefail;'
+      "set -o pipefail;"
     end
 
     def socket?

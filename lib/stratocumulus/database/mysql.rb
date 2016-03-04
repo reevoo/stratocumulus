@@ -1,11 +1,11 @@
 # encoding: UTF-8
-require 'stratocumulus/database'
+require "stratocumulus/database"
 
 module Stratocumulus
   class MySQL < Database
     def command
-      command = 'mysqldump '
-      command << '--single-transaction '
+      command = "mysqldump "
+      command << "--single-transaction "
       command << "-u#{username} "
       command << "-h#{host} " unless socket?
       command << "-P#{port} " unless socket?
@@ -14,17 +14,17 @@ module Stratocumulus
     end
 
     def dependencies
-      super + ['mysqldump']
+      super + ["mysqldump"]
     end
 
     private
 
     def username
-      @username || 'root'
+      @username || "root"
     end
 
     def host
-      @host || 'localhost'
+      @host || "localhost"
     end
 
     def port

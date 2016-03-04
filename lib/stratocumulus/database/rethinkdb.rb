@@ -1,6 +1,6 @@
 # encoding: UTF-8
-require 'stratocumulus/database'
-require 'tmpdir'
+require "stratocumulus/database"
+require "tmpdir"
 
 module Stratocumulus
   class RethinkDB < Database
@@ -11,7 +11,7 @@ module Stratocumulus
     end
 
     def command
-      command = 'rethinkdb dump '
+      command = "rethinkdb dump "
       command << "-c #{host}:#{port} " unless socket?
       command << "-f #{path} "
       command << "-e #{@name}"
@@ -23,17 +23,17 @@ module Stratocumulus
     end
 
     def dependencies
-      ['rethinkdb-dump']
+      ["rethinkdb-dump"]
     end
 
     private
 
     def path
-      Dir.tmpdir + '/' + file
+      Dir.tmpdir + "/" + file
     end
 
     def suffix
-      '.tar.gz'
+      ".tar.gz"
     end
   end
 end

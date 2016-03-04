@@ -1,8 +1,8 @@
 # encoding: UTF-8
-require 'spec_helper'
+require "spec_helper"
 
 describe Stratocumulus::Runner do
-  subject { described_class.new('spec/support/test_config_file.yml') }
+  subject { described_class.new("spec/support/test_config_file.yml") }
   let(:storage) { double(upload: true) }
   let(:database) { double }
   let(:database2) { double }
@@ -15,41 +15,41 @@ describe Stratocumulus::Runner do
     subject.run
   end
 
-  it 'passes the correct config to Storage' do
+  it "passes the correct config to Storage" do
     expect(Stratocumulus::Storage).to receive(:new).twice.with(
-      'access_key_id' => 'I_AM_THE_KEY_ID',
-      'secret_access_key' => 'IamTHESekret',
-      'bucket' => 'stratocumulus-test',
-      'region' => 'eu-west1',
-      'retention' => { 1 => 30, 30 => 12 },
+      "access_key_id" => "I_AM_THE_KEY_ID",
+      "secret_access_key" => "IamTHESekret",
+      "bucket" => "stratocumulus-test",
+      "region" => "eu-west1",
+      "retention" => { 1 => 30, 30 => 12 },
     ).and_return(storage)
   end
 
-  it 'passes each database config to instances of Database' do
+  it "passes each database config to instances of Database" do
     expect(Stratocumulus::Database).to receive(:new).once.with(
-      'type' => 'mysql',
-      'name' => 'stratocumulus_test',
-      'storage' => 's3',
-      'username' => 'root',
-      'password' => 'sekret',
-      'host' => 'db1.example.com',
-      'port' => 3307,
+      "type" => "mysql",
+      "name" => "stratocumulus_test",
+      "storage" => "s3",
+      "username" => "root",
+      "password" => "sekret",
+      "host" => "db1.example.com",
+      "port" => 3307,
     )
 
     expect(Stratocumulus::Database).to receive(:new).once.with(
-      'type' => 'mysql',
-      'name' => 'stratocumulus_test_2',
-      'storage' => 's3',
+      "type" => "mysql",
+      "name" => "stratocumulus_test_2",
+      "storage" => "s3",
     )
   end
 
-  it 'uploads each database to storage' do
+  it "uploads each database to storage" do
     allow(Stratocumulus::Database).to receive(:new).once.with(
-      hash_including('name' => 'stratocumulus_test'),
+      hash_including("name" => "stratocumulus_test"),
     ).and_return(database)
 
     allow(Stratocumulus::Database).to receive(:new).once.with(
-      hash_including('name' => 'stratocumulus_test_2'),
+      hash_including("name" => "stratocumulus_test_2"),
     ).and_return(database2)
 
     expect(storage).to receive(:upload).once.with(database)
