@@ -1,5 +1,5 @@
 # encoding: UTF-8
-require "fog"
+require "fog/aws"
 require "logger"
 
 module Stratocumulus
