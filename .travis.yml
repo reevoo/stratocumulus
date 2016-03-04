@@ -10,7 +10,7 @@ before_install:
   - sudo apt-get update -qq
 install:
   - sudo apt-get install -y rethinkdb
-  - sudo pip install rethinkdb
+  - pip install rethinkdb
   - sudo cp /etc/rethinkdb/default.conf.sample /etc/rethinkdb/instances.d/instance1.conf
   - sudo /etc/init.d/rethinkdb restart
   - bundle install
