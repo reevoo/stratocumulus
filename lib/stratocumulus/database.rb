@@ -2,7 +2,6 @@
 require "stratocumulus/database/pipe_io"
 require "stratocumulus/database/mysql"
 require "stratocumulus/database/postgresql"
-require "stratocumulus/database/rethinkdb"
 require "English"
 
 module Stratocumulus
@@ -17,7 +16,6 @@ module Stratocumulus
       {
         "psql" => PostgreSQL,
         "mysql" => MySQL,
-        "rethinkdb" => RethinkDB,
       }
     end
 
