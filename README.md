@@ -20,6 +20,7 @@ s3:
   access_key_id: KEY_ID
   secret_access_key: SECRET_KEY
   bucket: database-backups
+  folder: staging # optional
   region: eu-west-1 # defaults to us-east-1
 databases:
   -
