@@ -2,6 +2,7 @@
 require "stratocumulus/database/pipe_io"
 require "stratocumulus/database/mysql"
 require "stratocumulus/database/postgresql"
+require "stratocumulus/database/etcd"
 require "English"
 
 module Stratocumulus
@@ -16,6 +17,7 @@ module Stratocumulus
       {
         "psql" => PostgreSQL,
         "mysql" => MySQL,
+        "etcd" => ETCD,
       }
     end
 
