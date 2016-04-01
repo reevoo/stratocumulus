@@ -41,9 +41,8 @@ describe Stratocumulus::ETCD do
   describe "#cleanup" do
     it "removes the backup dir" do
       match = %r{etcdctl backup --data-dir /var/lib/etcd --backup-dir (.*) && tar -cf - -C (.*) \.}.match(subject.command)
-      expect(Dir.exists?(match[1])).to be_truthy
+      expect(FileUtils).to receive(:rm_rf).with(match[1])
       subject.cleanup
-      expect(Dir.exists?(match[1])).to be_falsy
     end
   end
 end
