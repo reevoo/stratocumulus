@@ -19,7 +19,8 @@ describe Stratocumulus::ETCD do
   describe "#command" do
     context "default" do
       it "generates the dump command with sensible defaults" do
-        match = %r{etcdctl backup --data-dir /var/lib/etcd --backup-dir (.*) && tar -cf - -C (.*) \.}.match(subject.command)
+        match = %r{etcdctl backup --data-dir /var/lib/etcd --backup-dir (.*) && tar -cf - -C (.*) \.}
+                .match(subject.command)
         # We expect the backup dir passed to etcd to be the same as the one we pass to tar
         expect(match).to be_truthy
         expect(match[1]).to eq(match[2])
@@ -30,7 +31,7 @@ describe Stratocumulus::ETCD do
       let(:config) do
         {
           "data_dir" => "/bar/foo/etcd",
-          "name"     => "etcd_test"
+          "name"     => "etcd_test",
         }
       end
 
@@ -49,7 +50,8 @@ describe Stratocumulus::ETCD do
 
   describe "#cleanup" do
     it "removes the backup dir" do
-      match = %r{etcdctl backup --data-dir /var/lib/etcd --backup-dir (.*) && tar -cf - -C (.*) \.}.match(subject.command)
+      match = %r{etcdctl backup --data-dir /var/lib/etcd --backup-dir (.*) && tar -cf - -C (.*) \.}
+              .match(subject.command)
       expect(FileUtils).to receive(:rm_rf).with(match[1])
       subject.cleanup
     end
