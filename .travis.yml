@@ -5,6 +5,10 @@ rvm:
   - 2.1.8
 env: CODECLIMATE_REPO_TOKEN=650676b7530bf62fce4284e263272a8dcab015f4f34fe6dab251ead2ea6b4813
 sudo: false
+before_install:
+ - curl -L  https://github.com/coreos/etcd/releases/download/v2.3.0/etcd-v2.3.0-linux-amd64.tar.gz -o etcd-v2.3.0-linux-amd64.tar.gz
+ - tar xzvf etcd-v2.3.0-linux-amd64.tar.gz
+ - export PATH=$PWD/etcd-v2.3.0-linux-amd64:$PATH
 services:
   - mysql
   - postgresql
