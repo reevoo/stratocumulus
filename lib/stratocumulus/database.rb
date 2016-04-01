@@ -47,6 +47,10 @@ module Stratocumulus
       ["gzip"]
     end
 
+    def cleanup
+      # NOOP
+    end
+
     private
 
     def check_dependencies

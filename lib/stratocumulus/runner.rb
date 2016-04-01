@@ -8,8 +8,14 @@ module Stratocumulus
 
     def run
       @config["databases"].each do |database_config|
-        database = Database.build(database_config)
-        upload(database, database_config["storage"])
+        begin
+          database = Database.build(database_config)
+          upload(database, database_config["storage"])
+        rescue => e
+          $stderr.puts "warning: #{e.message}"
+        ensure
+          database.cleanup
+        end
       end
     end
 
