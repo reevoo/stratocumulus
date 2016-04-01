@@ -7,7 +7,7 @@ describe Stratocumulus::ETCD do
   end
 
   let(:config) do
-    {}
+    { "name" => "etcd_test" }
   end
 
   describe "#dependencies" do
@@ -28,13 +28,22 @@ describe Stratocumulus::ETCD do
 
     context "when the datadir is set" do
       let(:config) do
-        { "data_dir" => "/bar/foo/etcd" }
+        {
+          "data_dir" => "/bar/foo/etcd",
+          "name"     => "etcd_test"
+        }
       end
 
       it "uses the given data dir" do
         expect(subject.command).to include "/bar/foo/etcd"
         expect(subject.command).to_not include "/var/lib/etcd"
       end
+    end
+  end
+
+  describe "filename" do
+    it "uses the correct suffix" do
+      expect(subject.filename).to match(/.*\.tar\.gz$/)
     end
   end
 

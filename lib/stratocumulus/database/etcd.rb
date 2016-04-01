@@ -7,6 +7,7 @@ module Stratocumulus
   class ETCD < Database
     def initialize(options = {})
       @data_dir = options["data_dir"]
+      super(options)
     end
 
     def command
@@ -18,7 +19,7 @@ module Stratocumulus
     end
 
     def dependencies
-      super + ["etcdctl", "tar"]
+      super + %w(etcdctl tar)
     end
 
     def cleanup
