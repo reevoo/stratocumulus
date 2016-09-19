@@ -1,6 +1,0 @@
-StringLiterals:
-  EnforcedStyle: "single_quotes"
-Documentation:
-  Enabled: false
-ModuleFunction:
-  Enabled: false

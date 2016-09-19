@@ -20,7 +20,7 @@ describe Stratocumulus::MySQL do
     context "default" do
       it "generates the dump command with sensible defaults" do
         expect(subject.command).to eq(
-          "mysqldump --single-transaction -uroot stratocumulus_test",
+          "mysqldump --single-transaction --quick -uroot stratocumulus_test",
         )
       end
     end
@@ -35,7 +35,7 @@ describe Stratocumulus::MySQL do
 
       it "generates the dump command with a default host" do
         expect(subject.command).to eq(
-          "mysqldump --single-transaction -uroot -pseecrit stratocumulus_test",
+          "mysqldump --single-transaction --quick -uroot -pseecrit stratocumulus_test",
         )
       end
     end
@@ -50,7 +50,7 @@ describe Stratocumulus::MySQL do
 
       it "generates the dump command with a default host" do
         expect(subject.command).to eq(
-          "mysqldump --single-transaction -uroot -hlocalhost -P13306 stratocumulus_test" # rubocop:disable Metrics/LineLength
+          "mysqldump --single-transaction --quick -uroot -hlocalhost -P13306 stratocumulus_test" # rubocop:disable Metrics/LineLength
         )
       end
     end
@@ -65,7 +65,7 @@ describe Stratocumulus::MySQL do
 
       it "generates the dump command with a default port" do
         expect(subject.command).to eq(
-          "mysqldump --single-transaction -uroot -hdb.example.com -P3306 stratocumulus_test" # rubocop:disable Metrics/LineLength
+          "mysqldump --single-transaction --quick -uroot -hdb.example.com -P3306 stratocumulus_test" # rubocop:disable Metrics/LineLength
         )
       end
     end
@@ -81,7 +81,7 @@ describe Stratocumulus::MySQL do
 
       it "generates the dump command with the port and host" do
         expect(subject.command).to eq(
-          "mysqldump --single-transaction -uroot -hdb.example.com -P33306 stratocumulus_test" # rubocop:disable Metrics/LineLength
+          "mysqldump --single-transaction --quick -uroot -hdb.example.com -P33306 stratocumulus_test" # rubocop:disable Metrics/LineLength
         )
       end
     end
@@ -96,7 +96,7 @@ describe Stratocumulus::MySQL do
 
       it "generates the dump command with the username" do
         expect(subject.command).to eq(
-          "mysqldump --single-transaction -ususan stratocumulus_test",
+          "mysqldump --single-transaction --quick -ususan stratocumulus_test",
         )
       end
     end

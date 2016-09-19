@@ -6,6 +6,7 @@ module Stratocumulus
     def command
       command = "mysqldump "
       command << "--single-transaction "
+      command << "--quick "
       command << "-u#{username} "
       command << "-h#{host} " unless socket?
       command << "-P#{port} " unless socket?
